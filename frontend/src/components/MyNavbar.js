@@ -19,6 +19,7 @@ const MyNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/myWorkouts">MyWorkouts</Nav.Link>
           </Nav>
           <Nav>
             {user && (
