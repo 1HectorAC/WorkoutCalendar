@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MyWorkouts = () => {
 
@@ -9,18 +9,56 @@ const MyWorkouts = () => {
     const [weekday, setWeekday] = useState('monday');
     const [bodyPart, setBodyPart] = useState('');
 
-
+    const [error,setError] = useState(null);
+    const [workouts, setWorkouts] = useState(null);
     //test data
+    /*
     const workouts = [
         { title: 'Push ups', reps: 10, sets: 2, weekday: 'monday', bodyPart: 'arms' },
         { title: 'Sit ups', reps: 20, sets: 2, weekday: 'monday', bodyPart: 'core' },
         { title: 'Curl ups', reps: 10, sets: 2, weekday: 'tuesday', bodyPart: 'arms' }
-    ];
+    ];*/
 
     // Handle submit for adding a workout
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const workout = {title, reps,sets,weekday,bodyPart,user_id:'abc123'};
+        const response = await fetch('/api/workout/workout', {
+            method:'POST',
+            body: JSON.stringify(workout),
+            headers:{'Content-Type':'application/json'}
+        })
+        const json = await response.json();
+
+        if(!response.ok){
+            setError(json.error);
+        }
+        if(response.ok){
+            //clear fields
+            setTitle('');
+            setReps('');
+            setSets('');
+            setWeekday('monday');
+            setBodyPart('');
+            setError(null);
+        }
+        
+
     }
+
+    // Setup getting workouts in useEffect
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            const response = await fetch('/api/workout/workouts');
+            const json = await response.json();
+            if(response.ok){
+                setWorkouts(json);
+            }
+
+        }
+        fetchWorkouts();
+    },[]);
+
     return (
         <div>
             <h1>My Workouts Page</h1>
@@ -29,11 +67,11 @@ const MyWorkouts = () => {
             <form onSubmit={handleSubmit}>
                 <h3>Add a Workout</h3>
                 <label>Title</label>
-                <input type='text' value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
                 <label>reps</label>
-                <input type='number' value={reps} onChange={(e) => setReps(e.target.value)}></input>
+                <input type='number' value={reps} onChange={(e) => setReps(e.target.value)} />
                 <label>sets</label>
-                <input type='number' value={sets} onChange={(e) => setSets(e.target.value)}></input>
+                <input type='number' value={sets} onChange={(e) => setSets(e.target.value)} />
                 <label>Day</label>
                 <select value={weekday} onChange={(e) => setWeekday(e.target.value)}>
                     <option value='monday'>Monday</option>
@@ -44,17 +82,19 @@ const MyWorkouts = () => {
                     <option value='saturday'>Saturday</option>
                     <option value='sunday'>Sunday</option>
                 </select>
-                <label value={bodyPart} onChange={(e) => setBodyPart(e.target.value)}>Body Part</label>
-                <input type='text'></input>
+                <label>BodyPart</label>
+                <input type='text' value={bodyPart} onChange={(e) => setBodyPart(e.target.value)} />
                 <button>Submit</button>
+                {error && <div className="error">{error}</div>}
             </form>
             <div>
 
                 <hr />
                 <h3>My Workouts Calender</h3>
-                {workouts.map((w) => (
-                    <div key='w.title'>
-                        <p>{w.title} {w.reps}, {w.sets}, {w.weekday}, {w.bodyPart}</p>
+                {workouts && workouts.map((w) => (
+                    <div key={w.title}>
+                        <h5>{w.title}</h5>
+                        <p> {w.reps}, {w.sets}, {w.weekday}, {w.bodyPart}</p>
                     </div>
 
                 ))}
