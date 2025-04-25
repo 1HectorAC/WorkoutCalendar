@@ -18,7 +18,20 @@ const get_workouts = async (req,res) => {
 const add_workout = async (req,res) =>{
     const data = req.body;
 
-    // add empty field validation
+    // Empty fields validation
+    const emptyFields = [];
+    if(!data.title)
+        emptyFields.push('title');
+    if(!data.reps)
+        emptyFields.push('reps');
+    if(!data.sets)
+        emptyFields.push('sets');
+    if(!data.weekday)
+        emptyFields.push('weekday');
+    if(!data.bodyPart)
+        emptyFields.push('bodyPart');
+    if(emptyFields.length > 0)
+        return res.status(400).json({error:'Please fill out all fields.', emptyFields});
 
     try{
         const workout = await Workout.create({...data});

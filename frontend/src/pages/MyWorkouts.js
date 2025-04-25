@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
 const MyWorkouts = () => {
+    const [workouts, setWorkouts] = useState(null);
 
-    // form data fields
+    // Form data fields.
     const [title, setTitle] = useState('');
     const [reps, setReps] = useState('');
     const [sets, setSets] = useState('');
@@ -10,16 +11,10 @@ const MyWorkouts = () => {
     const [bodyPart, setBodyPart] = useState('');
 
     const [error,setError] = useState(null);
-    const [workouts, setWorkouts] = useState(null);
-    //test data
-    /*
-    const workouts = [
-        { title: 'Push ups', reps: 10, sets: 2, weekday: 'monday', bodyPart: 'arms' },
-        { title: 'Sit ups', reps: 20, sets: 2, weekday: 'monday', bodyPart: 'core' },
-        { title: 'Curl ups', reps: 10, sets: 2, weekday: 'tuesday', bodyPart: 'arms' }
-    ];*/
+    const [emptyFields, setEmptyFields] = useState([]);
+    
 
-    // Handle submit for adding a workout
+    // Handle submit for adding a workout.
     const handleSubmit = async (e) => {
         e.preventDefault();
         const workout = {title, reps,sets,weekday,bodyPart,user_id:'abc123'};
@@ -32,21 +27,23 @@ const MyWorkouts = () => {
 
         if(!response.ok){
             setError(json.error);
+            setEmptyFields(json.emptyFields);
         }
         if(response.ok){
-            //clear fields
+            // Clear fields.
             setTitle('');
             setReps('');
             setSets('');
             setWeekday('monday');
             setBodyPart('');
             setError(null);
+            setEmptyFields([]);
         }
         
 
     }
 
-    // Setup getting workouts in useEffect
+    // Setup getting workouts in useEffect.
     useEffect(() => {
         const fetchWorkouts = async () => {
             const response = await fetch('/api/workout/workouts');
@@ -54,7 +51,6 @@ const MyWorkouts = () => {
             if(response.ok){
                 setWorkouts(json);
             }
-
         }
         fetchWorkouts();
     },[]);
@@ -67,11 +63,11 @@ const MyWorkouts = () => {
             <form onSubmit={handleSubmit}>
                 <h3>Add a Workout</h3>
                 <label>Title</label>
-                <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
+                <input type='text' className={emptyFields.includes('title')?'errorTextBox':''} value={title} onChange={(e) => setTitle(e.target.value)} />
                 <label>reps</label>
-                <input type='number' value={reps} onChange={(e) => setReps(e.target.value)} />
+                <input type='number' className={emptyFields.includes('reps')?'errorTextBox':''} value={reps} onChange={(e) => setReps(e.target.value)} />
                 <label>sets</label>
-                <input type='number' value={sets} onChange={(e) => setSets(e.target.value)} />
+                <input type='number' className={emptyFields.includes('sets')?'errorTextBox':''} value={sets} onChange={(e) => setSets(e.target.value)} />
                 <label>Day</label>
                 <select value={weekday} onChange={(e) => setWeekday(e.target.value)}>
                     <option value='monday'>Monday</option>
@@ -83,7 +79,7 @@ const MyWorkouts = () => {
                     <option value='sunday'>Sunday</option>
                 </select>
                 <label>BodyPart</label>
-                <input type='text' value={bodyPart} onChange={(e) => setBodyPart(e.target.value)} />
+                <input className={emptyFields.includes('bodyPart')?'errorTextBox':''} type='text' value={bodyPart} onChange={(e) => setBodyPart(e.target.value)} />
                 <button>Submit</button>
                 {error && <div className="error">{error}</div>}
             </form>
