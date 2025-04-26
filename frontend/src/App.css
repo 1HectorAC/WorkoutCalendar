@@ -37,6 +37,15 @@
   }
 }
 
+.headerPanel {
+  background-color: #e4e4ea;
+  padding:20px;
+}
+
+.centerPanel {
+  line-height: 1;
+}
+
 .error {
   color:red;
 }
