@@ -7,7 +7,7 @@ const Home = () => {
                 <h1>Welcome to Workout Calender!</h1>
                 <p>Create a weekly workout routine with our simple to use website.</p>
             </div>
-            <div class='centerPanel'>
+            <div className='centerPanel'>
                 <h3>How to?</h3>
                 <p>- Make an account/log in</p>
                 <p>- Go to MyWorkouts page</p>
