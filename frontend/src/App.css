@@ -46,6 +46,18 @@
   line-height: 1;
 }
 
+.workoutPanel{
+  border-radius: 10px;
+  background-color: #e7e9ed;
+  margin: 20px;
+}
+.workoutTable{
+  
+  color:red;
+  margin:20px;
+  max-width: 80%;
+}
+
 .error {
   color:red;
 }

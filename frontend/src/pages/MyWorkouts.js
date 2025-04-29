@@ -64,26 +64,39 @@ const MyWorkouts = () => {
     // React component that creates a table for workout data.
     const WorkoutTable = (props) => {
         return (
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Reps</th>
-                        <th>Sets</th>
-                        <th>Body Part</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {props.workoutData.map((w) => (
-                        <tr key={w.title}>
-                            <td >{w.title}</td>
-                            <td> {w.reps}</td>
-                            <td>{w.sets}</td>
-                            <td>{w.bodyPart}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="workoutPanel">
+                <div className="row">
+                    <div className="col-md-3">
+                        <h5 style={{padding:'20px'}}>{props.title}</h5>
+                    </div>
+                    <div className="col-md-9">
+                        <table className='workoutTable table table-striped table-sm'>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Reps</th>
+                                    <th>Sets</th>
+                                    <th>Body Part</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {props.workoutData.map((w) => (
+                                    <tr key={w.title}>
+                                        <td >{w.title}</td>
+                                        <td> {w.reps}</td>
+                                        <td>{w.sets}</td>
+                                        <td>{w.bodyPart}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+
         )
     }
 
@@ -138,20 +151,20 @@ const MyWorkouts = () => {
 
                 <hr />
                 <h3>My Workouts Calender</h3>
-                <h5>Monday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.monday} />}
-                <h5>Tuesday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.tuesday} />}
-                <h5>Wednesday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.wednesday} />}
-                <h5>Thursday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.thursday} />}
-                <h5>Friday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.friday} />}
-                <h5>Saturday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.saturday} />}
-                <h5>Sunday</h5>
-                {workouts && <WorkoutTable workoutData={workouts.sunday} />}
+
+                {workouts && <WorkoutTable workoutData={workouts.monday} title='Monday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.tuesday} title='Tuesday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.wednesday} title='Wednesday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.thursday} title='Thursday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.friday} title='Friday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.saturday} title='Saturday' />}
+
+                {workouts && <WorkoutTable workoutData={workouts.sunday} title='Sunday' />}
             </div>
         </div>
     )
