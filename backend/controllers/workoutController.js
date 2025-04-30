@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Workout = require('../models/workoutModel');
 
 // Get all workouts owned by a certain user from db.
@@ -44,8 +45,23 @@ const add_workout = async (req,res) =>{
 }
 
 // Delete a workout owned by a user from db.
-const delete_workout = (req,res) => {
-    res.status(200).json({mssg:'Delete workout'});
+const delete_workout = async (req,res) => {
+    console.log('running delete workout');
+    const id = req.params.id;
+
+    //validation of id check
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        console.log('error deleting workout');
+        res.status(404).json({error:'No such workout'});
+    }
+
+    const workout = await Workout.findOneAndDelete({_id:id});
+    if(!workout){
+        console.log('error deleting workout');
+        res.status(404).json({error:'No such workout'});
+    }
+
+    res.status(200).json(workout);
 }
 
 module.exports = {get_workouts, add_workout, delete_workout};

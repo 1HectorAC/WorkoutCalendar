@@ -10,6 +10,6 @@ router.get('/workouts', workoutController.get_workouts);
 router.post('/workout', workoutController.add_workout);
 
 // Route to delete a workout
-router.delete('/workout', workoutController.delete_workout);
+router.delete('/workout/:id', workoutController.delete_workout);
 
 module.exports = router;
