@@ -38,12 +38,17 @@
 }
 
 .headerPanel {
-  background-color: #e4e4ea;
+  background-color: #e7e9ed;
   padding:20px;
 }
 
 .centerPanel {
   line-height: 1;
+}
+
+.formPanel {
+  margin:10px;
+  padding:10px;
 }
 
 .workoutPanel{
