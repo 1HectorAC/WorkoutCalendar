@@ -1,7 +1,11 @@
 const express = require('express');
 const workoutController = require('../controllers/workoutController');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router();
+
+// Check if authenticated before routes.
+router.use(requireAuth);
 
 // Route to get a users workouts
 router.get('/workouts', workoutController.get_workouts);

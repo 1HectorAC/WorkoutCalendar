@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // React component that creates a table for workout data.
 const WorkoutTable = (props) => {
@@ -21,7 +22,7 @@ const WorkoutTable = (props) => {
                         </thead>
                         <tbody>
                             {props.workoutData.map((w) => (
-                                <tr key={w._id}>
+                                <tr key={w.title}>
                                     <td>{w.title}</td>
                                     <td>{w.reps}</td>
                                     <td>{w.sets}</td>
@@ -39,6 +40,7 @@ const WorkoutTable = (props) => {
 
 const MyWorkouts = () => {
     const [workouts, setWorkouts] = useState(null);
+    const {user} = useAuthContext();
 
     // Form data fields.
     const [title, setTitle] = useState('');
@@ -53,11 +55,18 @@ const MyWorkouts = () => {
     // Handle submit for adding a workout.
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!user){
+            setError('You must be logged in');
+            return;
+        }
         const workout = { title, reps, sets, weekday, bodyPart, user_id: 'abc123' };
         const response = await fetch('/api/workout/workout', {
             method: 'POST',
             body: JSON.stringify(workout),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json();
 
@@ -84,8 +93,13 @@ const MyWorkouts = () => {
 
     // Handle delete of workouts.
     const handleDeleteSubmit = async (id, weekday) => {
+        if(!user){
+            setError('You must be logged in');
+            return;
+        }
         const response = await fetch('/api/workout/workout/' + id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers:{'Authorization': `Bearer ${user.token}`}
         });
         //const json = await response.json();
 
@@ -100,7 +114,9 @@ const MyWorkouts = () => {
     // Setup getting workouts in useEffect.
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('/api/workout/workouts');
+            const response = await fetch('/api/workout/workouts', {
+                headers:{'Authorization': `Bearer ${user.token}`}
+            });
             const json = await response.json();
             if (response.ok) {
                 //setWorkouts(json);
@@ -114,8 +130,12 @@ const MyWorkouts = () => {
                 setWorkouts(grouped);
             }
         }
-        fetchWorkouts();
-    }, []);
+
+        // check if logged in before getting workouts
+        if(user)
+            fetchWorkouts();
+
+    }, [user]);
 
     return (
         <div>
