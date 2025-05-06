@@ -22,7 +22,7 @@ const WorkoutTable = (props) => {
                         </thead>
                         <tbody>
                             {props.workoutData.map((w) => (
-                                <tr key={w.title}>
+                                <tr key={w._id}>
                                     <td>{w.title}</td>
                                     <td>{w.reps}</td>
                                     <td>{w.sets}</td>
@@ -51,6 +51,8 @@ const MyWorkouts = () => {
 
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
+
+    const [submitCount, setSubmitCount] = useState(0);
 
     // Handle submit for adding a workout.
     const handleSubmit = async (e) => {
@@ -83,11 +85,9 @@ const MyWorkouts = () => {
             setBodyPart('');
             setError(null);
             setEmptyFields([]);
-
-            // Edit workout state to reflect added workout.
-            let tempWorkouts = { ...workouts };
-            tempWorkouts[workout.weekday].push(workout);
-            setWorkouts(tempWorkouts);
+  
+            // submit count used as dependency var in useEffect.
+            setSubmitCount(submitCount + 1);
         }
     }
 
@@ -135,7 +135,7 @@ const MyWorkouts = () => {
         if(user)
             fetchWorkouts();
 
-    }, [user]);
+    }, [user,submitCount]);
 
     return (
         <div>
