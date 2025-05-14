@@ -4,8 +4,8 @@ const Workout = require('../models/workoutModel');
 // Get all workouts owned by a certain user from db.
 const get_workouts = async (req,res) => {
     try{
-       
-        const workouts = await Workout.find({});
+        const user_id = req.user._id;
+        const workouts = await Workout.find({user_id});
         res.status(200).json(workouts);
         
     }catch(err){
@@ -35,7 +35,8 @@ const add_workout = async (req,res) =>{
         return res.status(400).json({error:'Please fill out all fields.', emptyFields});
 
     try{
-        const workout = await Workout.create({...data});
+        const user_id = req.user._id;
+        const workout = await Workout.create({...data, user_id});
         res.status(200).json(workout);
     } catch(err){
         console.log("Error Trying to add workout");

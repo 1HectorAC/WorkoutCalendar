@@ -61,7 +61,7 @@ const MyWorkouts = () => {
             setError('You must be logged in');
             return;
         }
-        const workout = { title, reps, sets, weekday, bodyPart, user_id: 'abc123' };
+        const workout = { title, reps, sets, weekday, bodyPart};
         const response = await fetch('/api/workout/workout', {
             method: 'POST',
             body: JSON.stringify(workout),
