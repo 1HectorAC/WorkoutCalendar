@@ -20,7 +20,7 @@ const MyNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/myWorkouts">MyWorkouts</Nav.Link>
+            {user && <Nav.Link as={Link} to="/myWorkouts">MyWorkouts</Nav.Link>}
           </Nav>
           <Nav>
             {user && (
