@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -39,7 +40,7 @@
 
 .headerPanel {
   background-color: #e7e9ed;
-  padding:20px;
+  padding: 20px;
 }
 
 .centerPanel {
@@ -47,25 +48,36 @@
 }
 
 .formPanel {
-  margin:10px;
-  padding:10px;
+  margin: 10px;
+  padding: 10px;
 }
 
-.workoutPanel{
+.workoutPanel {
   border-radius: 10px;
   background-color: #e7e9ed;
   margin: 20px;
 }
-.workoutTable{
-  
-  color:red;
-  margin:20px;
+
+.workoutTable {
+
+  color: red;
+  margin: 20px;
   max-width: 80%;
 }
 
 .error {
-  color:red;
+  color: red;
 }
+
 .errorTextBox {
   border-color: red;
+}
+
+.formStyling {
+  background-color: #e5e5e5;
+  padding: 30px;
+  width: 60%;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 10px;
 }
